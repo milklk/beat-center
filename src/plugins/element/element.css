@@ -1,0 +1,32 @@
+.el-main {
+  padding: 60px 0 0 200px;
+  width: 100vw;
+  height: 100vh;
+  background: #ccc;
+}
+.el-header {
+  width: 100vw;
+  background: #000;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.el-aside {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  padding-top: 60px;
+  height: 100vh;
+}
+.container-aside {
+  height: 100%;
+}
+.el-menu {
+  height: 100%;
+}
+.el-checkbox__inner {
+  margin-top: 5px;
+}
