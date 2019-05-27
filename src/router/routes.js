@@ -1,6 +1,15 @@
 import Login from "../views/login.vue";
 import Home from "../views/home.vue";
-import Case from "../views/case.vue"
+import caseAnalyze from "../views/case/case-analyze.vue";
+import caseManage from "../views/case/case-manage.vue";
+import crewAnalyze from "../views/crew/crew-analyze.vue";
+import crewManage from "../views/crew/crew-manage.vue";
+import informationAnalyze from "../views/information/information-analyze.vue";
+import informationManage from "../views/information/information-manage.vue";
+import combatWall from "../views/wall/combat-wall.vue";
+import systemWall from "../views/wall/system-wall.vue";
+import informationWall from "../views/wall/information-wall.vue";
+import fileWall from "../views/wall/file-wall.vue";
 
 const routes = [
   {
@@ -15,8 +24,44 @@ const routes = [
     component: Home
   },
   {
-    path: '/case',
-    component: Case
+    path: "/case-analyze",
+    component: caseAnalyze
+  },
+  {
+    path: "/case-manage",
+    component: caseManage
+  },
+  {
+    path: "/crew-analyze",
+    component: crewAnalyze
+  },
+  {
+    path: "/crew-manage",
+    component: crewManage
+  },
+  {
+    path: "/information-analyze",
+    component: informationAnalyze
+  },
+  {
+    path: "/information-manage",
+    component: informationManage
+  },
+  {
+    path: "/combat-wall",
+    component: combatWall
+  },
+  {
+    path: "/system-wall",
+    component: systemWall
+  },
+  {
+    path: "/information-wall",
+    component: informationWall
+  },
+  {
+    path: "/file-wall",
+    component: fileWall
   }
 ];
 

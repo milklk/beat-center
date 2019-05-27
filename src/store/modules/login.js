@@ -19,7 +19,7 @@ const actions = {
       if (userNameArr.indexOf(user) !== -1) {
         const index = userNameArr.indexOf(user);
         if (passWordArr[index] === password) {
-          ses.setItem("data", datas[index].token);
+          ses.setItem("token", datas[index].token);
           ses.setItem("user", userNameArr[index]);
         }
       }

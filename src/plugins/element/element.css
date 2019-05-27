@@ -44,3 +44,6 @@
 .el-table th {
   padding: 6px 0;
 }
+.el-dropdown-menu__item {
+  line-height: 20px;
+}

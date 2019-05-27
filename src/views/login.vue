@@ -31,12 +31,6 @@
             </div>
           </div>
         </label>
-        <el-checkbox
-          v-model="auto"
-          style="justify-content:flex-start;margin-left:65px"
-        >
-          记住密码
-        </el-checkbox>
         <button type="button" @click="sumbit">登录</button>
       </form>
     </main>
@@ -88,7 +82,7 @@ export default {
           user,
           password
         });
-        if (window.sessionStorage.data) {
+        if (window.sessionStorage.token) {
           this.$router.push({ path: "/" });
         } else {
           this.warn = "你输入的用户名或密码错误";
@@ -135,7 +129,7 @@ h1 img
   margin-right 10px
 main
   width 478px
-  height 328px
+  height 315px
   position absolute
   top 0
   left 0
@@ -188,6 +182,7 @@ main button
   border-radius 10px
   border none
   margin-left 104px
+  margin-top 10px
   color #ffffff
   font-size 24px
 </style>

@@ -152,9 +152,7 @@ export default {
     };
   },
   methods: {
-    handleClose(tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1);
-    }
+
   }
 };
 </script>

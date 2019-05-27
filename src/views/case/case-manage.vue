@@ -1,19 +1,21 @@
 <template>
   <div class="case">
-    <Tab />
-    <!-- <List /> -->
-    <Detail />
+    <Tab :name="'案件'" :tags="tag" />
+    <List v-if="!this.$route.query.value"/>
+    <Detail v-else/>
   </div>
 </template>
 
 <script>
-import Tab from "../components/tab";
-import List from "../components/list";
-import Detail from "../components/detail";
+import Tab from "../../components/tab";
+import List from "../../components/list";
+import Detail from "../../components/detail";
 export default {
-  name: "law-case",
+  name: "case-manage",
   data() {
-    return {};
+    return {
+      tag: []
+    };
   },
   components: {
     Tab,
