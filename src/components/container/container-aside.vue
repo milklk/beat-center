@@ -15,7 +15,7 @@
         <router-link to="">
           <el-menu-item index="2-1">案件分析</el-menu-item>
         </router-link>
-        <router-link to="">
+        <router-link to="/case">
           <el-menu-item index="2-2">案件管理</el-menu-item>
         </router-link>
       </el-submenu>

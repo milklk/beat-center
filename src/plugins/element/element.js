@@ -12,7 +12,12 @@ import {
   Menu,
   Submenu,
   menuItem,
-  MenuItemGroup
+  MenuItemGroup,
+  Tag,
+  Input,
+  Table,
+  TableColumn,
+  Pagination
 } from "element-ui";
 
 Vue.use(Button);
@@ -28,3 +33,8 @@ Vue.use(Menu);
 Vue.use(Submenu);
 Vue.use(menuItem);
 Vue.use(MenuItemGroup);
+Vue.use(Tag);
+Vue.use(Input);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Pagination);

@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
     // console.log(to.path) //每次跳转的路径
     if (to.path === "/") {
       //登录状态下 访问login.vue页面 会跳到index.vue
-      next({ path: "/home" });
+      next({ path: "/case" });
     } else {
       next();
     }

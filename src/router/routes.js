@@ -1,6 +1,6 @@
 import Login from "../views/login.vue";
 import Home from "../views/home.vue";
-import LawCase from "../views/law-case.vue"
+import Case from "../views/case.vue"
 
 const routes = [
   {
@@ -15,8 +15,8 @@ const routes = [
     component: Home
   },
   {
-    path: '/law-case',
-    component: LawCase
+    path: '/case',
+    component: Case
   }
 ];
 
