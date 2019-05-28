@@ -1,8 +1,8 @@
 <template>
-  <div class="case">
-    <Tab />
-    <!-- <List /> -->
-    <Detail />
+  <div class="information">
+    <Tab :name="'情报'"  />
+    <List v-if="!this.$route.query.value"/>
+    <Detail v-else/>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.case
+.information
   box-sizing border-box
   width 100%
   padding 20px

@@ -47,3 +47,6 @@
 .el-dropdown-menu__item {
   line-height: 20px;
 }
+.el-table th, .el-table tr {
+  cursor: pointer;
+}

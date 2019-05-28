@@ -1,6 +1,6 @@
 <template>
   <div class="case">
-    <Tab :name="'案件'" :tags="tag" />
+    <Tab :name="'案件'"  />
     <List v-if="!this.$route.query.value"/>
     <Detail v-else/>
   </div>

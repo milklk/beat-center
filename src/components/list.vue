@@ -9,8 +9,10 @@
         <el-button slot="append" icon="el-icon-search" class="icon"></el-button>
       </el-input>
       <div>
-        <el-button type="success">增加</el-button>
-        <el-button type="danger">删除</el-button>
+        <el-button type="success" @click="add">增加</el-button>
+        <el-button type="danger" @click="removes(tableData, selection)"
+          >删除</el-button
+        >
       </div>
     </header>
     <main>
@@ -19,6 +21,9 @@
         style="width: 100%;border: 1px solid #EBEEF5;margin-bottom: 20px"
         :cell-style="cellStyle"
         :header-cell-style="cellStyle"
+        @row-click="rowclick"
+        @select="select"
+        @select-all="select"
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column
@@ -29,27 +34,41 @@
         >
         </el-table-column>
         <el-table-column label="操作" width="100">
-          <template>
-            <el-button plain style="padding: 0px 0px;border: none;">
+          <template slot-scope="scope">
+            <el-button
+              plain
+              style="padding: 0px 0px;border: none;"
+              @click.stop="edit"
+            >
               编辑
             </el-button>
             <el-button
               type="danger"
               plain
               style="padding: 0px 0px;border: none;"
-              >删除</el-button
+              @click.stop="remove(scope.$index, tableData)"
             >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="block">
-        <el-pagination layout="prev, pager, next" :total="100"> </el-pagination>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="30"
+          :page-size="15"
+          @current-change="currentChange"
+        >
+        </el-pagination>
       </div>
     </main>
   </section>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { log } from "util";
 export default {
   name: "list",
   data() {
@@ -72,87 +91,53 @@ export default {
           value: "address"
         }
       ],
-      tableData: [
-        {
-          time: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          time: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          time: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          time: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          time: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          time: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          time: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          time: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          time: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          time: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          time: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          time: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          time: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          time: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          time: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        }
-      ]
+      selection: []
     };
   },
+  computed: {
+    ...mapGetters("manage", {
+      tableData: "gtableData",
+      tags: "gtags"
+    })
+  },
   methods: {
-
+    rowclick(row) {
+      const index = this.tags.findIndex(d => d.id === row.id);
+      if (index === -1) {
+        this.$store.commit("manage/setTags", {
+          tag: { name: row.name, id: row.id },
+          type: "push"
+        });
+      }
+      const path = this.$route.path;
+      this.$router.push({ path, query: { value: row.id } });
+    },
+    add() {
+      console.log(1);
+    },
+    edit() {
+      console.log(1);
+    },
+    remove(index, rows) {
+      rows.splice(index, 1);
+    },
+    removes(rows, selection) {
+      selection.forEach(d => {
+        const i = rows.findIndex(row => row.id === d.id);
+        rows.splice(i, 1);
+      });
+      this.selection = [];
+    },
+    select(selection) {
+      this.selection = selection;
+    },
+    currentChange(val) {
+      console.log(val);
+      
+    }
+  },
+  mounted() {
+    this.$store.dispatch("manage/getManage");
   }
 };
 </script>

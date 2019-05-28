@@ -1,8 +1,8 @@
 <template>
-  <div class="case">
-    <Tab />
-    <!-- <List /> -->
-    <Detail />
+  <div class="crew">
+    <Tab :name="'人员'" />
+    <List v-if="!this.$route.query.value"/>
+    <Detail v-else/>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.case
+.crew
   box-sizing border-box
   width 100%
   padding 20px
