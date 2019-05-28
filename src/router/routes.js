@@ -6,10 +6,8 @@ import crewAnalyze from "../views/crew/crew-analyze.vue";
 import crewManage from "../views/crew/crew-manage.vue";
 import informationAnalyze from "../views/information/information-analyze.vue";
 import informationManage from "../views/information/information-manage.vue";
-import combatWall from "../views/wall/combat-wall.vue";
-import systemWall from "../views/wall/system-wall.vue";
-import informationWall from "../views/wall/information-wall.vue";
-import fileWall from "../views/wall/file-wall.vue";
+import wallAnalyze from "../views/wall/wall-analyze.vue";
+import wallManage from "../views/wall/wall-manage.vue";
 
 const routes = [
   {
@@ -48,20 +46,12 @@ const routes = [
     component: informationManage
   },
   {
-    path: "/combat-wall",
-    component: combatWall
+    path: "/wall-analyze",
+    component: wallAnalyze
   },
   {
-    path: "/system-wall",
-    component: systemWall
-  },
-  {
-    path: "/information-wall",
-    component: informationWall
-  },
-  {
-    path: "/file-wall",
-    component: fileWall
+    path: "/wall-manage",
+    component: wallManage
   }
 ];
 

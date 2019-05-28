@@ -10,9 +10,9 @@
       </el-input>
       <div>
         <el-button type="success" @click="add">增加</el-button>
-        <el-button type="danger" @click="removes(tableData, selection)"
-          >删除</el-button
-        >
+        <el-button type="danger" @click="removes(tableData, selection)">
+          删除
+        </el-button>
       </div>
     </header>
     <main>
@@ -71,26 +71,16 @@ import { mapGetters } from "vuex";
 import { log } from "util";
 export default {
   name: "list",
+  props: {
+    table: Array
+  },
   data() {
     return {
       cellStyle: {
         "text-align": "center"
       },
       input: "",
-      table: [
-        {
-          name: "名称",
-          value: "name"
-        },
-        {
-          name: "时间",
-          value: "time"
-        },
-        {
-          name: "地点",
-          value: "address"
-        }
-      ],
+      
       selection: []
     };
   },
@@ -133,7 +123,6 @@ export default {
     },
     currentChange(val) {
       console.log(val);
-      
     }
   },
   mounted() {

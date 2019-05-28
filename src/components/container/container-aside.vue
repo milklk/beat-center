@@ -48,17 +48,11 @@
           <i class="el-icon-s-marketing"></i>
           <span slot="title">情报墙</span>
         </template>
-        <router-link to="/combat-wall">
-          <el-menu-item index="5-1">打击成效</el-menu-item>
+        <router-link to="/wall-analyze">
+          <el-menu-item index="5-1">情报墙分析</el-menu-item>
         </router-link>
-        <router-link to="/system-wall">
-          <el-menu-item index="5-2">系统分析</el-menu-item>
-        </router-link>
-        <router-link to="/information-wall">
-          <el-menu-item index="5-3">情报成效</el-menu-item>
-        </router-link>
-        <router-link to="/file-wall">
-          <el-menu-item index="5-4">一人一档</el-menu-item>
+        <router-link to="/wall-manage">
+          <el-menu-item index="5-2">情报墙管理</el-menu-item>
         </router-link>
       </el-submenu>
     </el-menu>
@@ -101,20 +95,12 @@ export default {
           index: "4-2"
         },
         {
-          path: "/combat-wall",
+          path: "/wall-analyze",
           index: "5-1"
         },
         {
-          path: "/system-wall",
+          path: "/wall-manage",
           index: "5-2"
-        },
-        {
-          path: "/information-wall",
-          index: "5-3"
-        },
-        {
-          path: "/file-wall",
-          index: "5-4"
         }
       ]
     };

@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "file-wall",
+  name: "wall-analyze",
   data () {
     return {
     };
