@@ -38,7 +38,8 @@ import { mapGetters } from "vuex";
 export default {
   name: "tab",
   props: {
-    name: String
+    name: String,
+    table: Array
   },
   data() {
     return {

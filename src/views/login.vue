@@ -39,6 +39,7 @@
 
 <script>
 import identify from "../components/identify";
+import { getCode } from "../api";
 export default {
   name: "login",
   data() {
@@ -47,7 +48,6 @@ export default {
       password: "",
       code: "",
       auto: false,
-      identifyCodes: "1234567890QWERTYUIOPASDFGHJKLZXCVBNM",
       identifyCode: "",
       warn: ""
     };
@@ -56,14 +56,22 @@ export default {
     identify
   },
   computed: {},
-  mounted() {
-    this.identifyCode = "";
-    this.makeCode(this.identifyCodes, 4);
+  async mounted() {
+    const code = await getCode();
+    if (code.ret === "200") {
+      this.identifyCode = code.data;
+    } else {
+      alert("网络连接错误，请刷新后重试");
+    }
   },
   methods: {
-    updata() {
-      this.identifyCode = "";
-      this.makeCode(this.identifyCodes, 4);
+    async updata() {
+      const code = await getCode();
+      if (code.ret === "200") {
+        this.identifyCode = code.data;
+      } else {
+        alert("网络连接错误，请刷新后重试");
+      }
     },
     async sumbit() {
       this.warn = !this.user
@@ -76,11 +84,13 @@ export default {
         ? "你输入的验证码有误，请重新输入"
         : "";
       if (!this.warn) {
-        const user = this.user,
-          password = this.password;
+        const account = this.user,
+          password = this.password,
+        code = this.code;
         await this.$store.dispatch("login/loging", {
-          user,
-          password
+          account,
+          password,
+          code
         });
         if (window.sessionStorage.token) {
           this.$router.push({ path: "/" });
@@ -90,20 +100,6 @@ export default {
       } else {
         this.updata();
         this.code = "";
-      }
-    },
-    randomNum(min, max) {
-      return Math.floor(Math.random() * (max - min) + min);
-    },
-    refreshCode() {
-      this.identifyCode = "";
-      this.makeCode(this.identifyCodes, 4);
-    },
-    makeCode(o, l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
       }
     }
   }

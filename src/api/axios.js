@@ -1,4 +1,5 @@
 import axios from "axios";
+axios.defaults.withCredentials = true;
 export default function ajax(url, data = {}, type = "get") {
   return new Promise(function(resolve, reject) {
     let promise;
@@ -13,7 +14,15 @@ export default function ajax(url, data = {}, type = "get") {
       }
       promise = axios.get(url);
     } else if (type === "post") {
-      promise = axios.post(url, data);
+      let dataStr = "";
+      Object.keys(data).forEach(key => {
+        dataStr += key + "=" + data[key] + "&";
+      });
+      if (dataStr !== "") {
+        dataStr = dataStr.substring(0, dataStr.lastIndexOf("&"));
+        url = url + "?" + dataStr;
+      }
+      promise = axios.post(url, {});
     }
     promise
       .then(function(response) {

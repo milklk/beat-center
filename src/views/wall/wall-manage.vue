@@ -1,7 +1,7 @@
 <template>
   <div class="crew">
-    <Tab :name="'情报墙'" :table="table" />
-    <List v-if="!this.$route.query.value" />
+    <Tab :name="'情报墙'" />
+    <List v-if="!this.$route.query.value" :table="table" />
     <Detail v-else />
   </div>
 </template>
@@ -20,8 +20,12 @@ export default {
           value: 'name'
         },
         {
-          name: '图表选项',
-          value: 'name'
+          name: '图表元素',
+          value: 'element'
+        },
+        {
+          name: '图表周期',
+          value: 'time'
         }
       ]
     };
