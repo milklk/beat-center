@@ -1,6 +1,11 @@
 import axios from "axios";
 axios.defaults.withCredentials = true;
+let token = 1;
 export default function ajax(url, data = {}, type = "get") {
+  if (window.sessionStorage.token && token) {
+    token = 0;
+    axios.defaults.headers.common["token"] = window.sessionStorage.token;
+  }
   return new Promise(function(resolve, reject) {
     let promise;
     if (type === "get") {
@@ -22,7 +27,7 @@ export default function ajax(url, data = {}, type = "get") {
         dataStr = dataStr.substring(0, dataStr.lastIndexOf("&"));
         url = url + "?" + dataStr;
       }
-      promise = axios.post(url, {});
+      promise = axios.post(url, data);
     }
     promise
       .then(function(response) {

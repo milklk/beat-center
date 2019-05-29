@@ -1,8 +1,8 @@
 <template>
   <div class="case">
-    <Tab :name="'案件'"  />
-    <List v-if="!this.$route.query.value"/>
-    <Detail v-else/>
+    <Tab :name="'案件'" />
+    <List v-if="!this.$route.query.value" :table="table" />
+    <Detail v-else />
   </div>
 </template>
 
@@ -14,7 +14,32 @@ export default {
   name: "case-manage",
   data() {
     return {
-      tag: []
+      table: [
+        {
+          name: "案件名称",
+          value: "name"
+        },
+        {
+          name: "缴获毒品类型",
+          value: "drugName"
+        },
+        {
+          name: "缴获毒品数量",
+          value: "drugNumber"
+        },
+        {
+          name: "案件类型",
+          value: "crew"
+        },
+        {
+          name: "案件区域",
+          value: "area"
+        },
+        {
+          name: "案件时间",
+          value: "drugNumber"
+        }
+      ]
     };
   },
   components: {

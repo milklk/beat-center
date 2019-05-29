@@ -80,7 +80,6 @@ export default {
         "text-align": "center"
       },
       input: "",
-      
       selection: []
     };
   },
