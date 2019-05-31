@@ -11,14 +11,14 @@
           placeholder="请输入内容"
           v-model="item.value"
           style="width: 220px"
-          v-if="!item.options"
+          v-if="!item.options && !item.picker"
         >
         </el-input>
         <el-select
           v-model="item.value"
           placeholder="请选择"
           style="width: 220px"
-          v-else
+          v-else-if="item.options"
         >
           <el-option
             v-for="option in item.options"
@@ -28,6 +28,14 @@
           >
           </el-option>
         </el-select>
+        <el-date-picker
+          v-model="item.value"
+          value-format="yyyy-MM-dd"
+          type="date"
+          placeholder="选择日期"
+          v-else-if="item.picker"
+        >
+        </el-date-picker>
       </div>
     </main>
     <footer>
@@ -96,7 +104,8 @@ export default {
     },
     success() {
       const query = {};
-      this.labels.forEach(d => {
+      if(true) {
+              this.labels.forEach(d => {
         if (!d.options) {
           if (typeof d.types === "string") {
             query[d.types] = d.value;
@@ -115,10 +124,13 @@ export default {
       if (!query.id) {
         query.id = "";
       }
+      console.log(query);
+
       this.addEditApi(query);
       this.show(false);
       this.acquire({ pageNumber: this.page, pageSize: 15 });
       this.labels = this.prompt.map(o => ({ ...o }));
+      }
     },
     info() {
       this.show(false);

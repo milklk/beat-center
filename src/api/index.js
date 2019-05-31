@@ -16,6 +16,8 @@ export const wallTableDataDel = ({ ids }) =>
 
 export const wallTableType = ({ dicType }) =>
   axios("/bs/dictionary/getBaseDictionarySelectList", { dicType }, "post");
+export const wallList = ({ pageNumber, pageSize }) =>
+  axios("/bs/dictionary/list", { pageNumber, pageSize }, "post");
 
 export const wallConfigAddEdit = ({
   id,
@@ -28,7 +30,37 @@ export const wallConfigAddEdit = ({
 }) =>
   axios(
     "/bs/bsReportConfig/save",
-    { id, name, type, cycleType, cycleName, state,dataCycle },
+    { id, name, type, cycleType, cycleName, state, dataCycle },
+    "post"
+  );
+export const wallDataAddEdit = ({
+  id,
+  name,
+  type,
+  code,
+  abscissaName,
+  quantity,
+  source,
+  statisticsDate,
+  cycleType,
+  cycleName,
+  state
+}) =>
+  axios(
+    "/bs/bsReport/save",
+    {
+      id,
+      name,
+      type,
+      code,
+      abscissaName,
+      quantity,
+      source,
+      statisticsDate,
+      cycleType,
+      cycleName,
+      state
+    },
     "post"
   );
 

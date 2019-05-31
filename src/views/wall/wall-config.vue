@@ -55,7 +55,8 @@ export default {
         addEdit: wallConfigAddEdit,
         acquire: this.wallConfig
       },
-      type: []
+      reportType: [],
+      cycleType:[]
     };
   },
   components: {
@@ -68,7 +69,7 @@ export default {
       return [
         {
           name: "图表名称",
-          options: this.type,
+          options: this.reportType,
           value: "",
           types: {
             code: 'type',
@@ -83,28 +84,7 @@ export default {
         },
         {
           name: "周期类型",
-          options: [
-            {
-              value: '年',
-              code: 'YEAR'
-            },
-            {
-              value: '季',
-              code: 'QUAR'
-            },
-            {
-              value: '月',
-              code: 'MON'
-            },
-            {
-              value: '周',
-              code: 'WEEK'
-            },
-            {
-              value: '日',
-              code: 'DAY'
-            },
-          ],
+          options: this.cycleType,
           value: "",
           types: {
             code: 'cycleType',
@@ -134,6 +114,7 @@ export default {
   mounted() {
     this.wallConfig({ pageNumber: 1, pageSize: 15 });
     this.wallConfigType({ dicType: "reportType" });
+    this.wallConfigType({ dicType: "cycleType" });
   },
   methods: {
     async wallConfig({ pageNumber, pageSize }) {
@@ -142,10 +123,10 @@ export default {
       this.tableData = config.list;
       this.total = config.total;
     },
-    async wallConfigType({ dicType }) {
-      const type = await wallTableType({ dicType });
-      if (type.ret === "200") {
-        this.type = type.data;
+    async wallConfigType({ dicType },type) {
+      const list = await wallTableType({ dicType });
+      if (list.ret === "200") {
+        this[dicType] = list.data;
       }
     }
   }
