@@ -7,7 +7,8 @@ import crewManage from "../views/crew/crew-manage.vue";
 import informationAnalyze from "../views/information/information-analyze.vue";
 import informationManage from "../views/information/information-manage.vue";
 import wallAnalyze from "../views/wall/wall-analyze.vue";
-import wallManage from "../views/wall/wall-manage.vue";
+import wallConfig from "../views/wall/wall-config.vue";
+import wallData from "../views/wall/wall-data.vue";
 
 const routes = [
   {
@@ -50,8 +51,12 @@ const routes = [
     component: wallAnalyze
   },
   {
-    path: "/wall-manage",
-    component: wallManage
+    path: "/wall-config",
+    component: wallConfig
+  },
+  {
+    path: "/wall-data",
+    component: wallData
   }
 ];
 

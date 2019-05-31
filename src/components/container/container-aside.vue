@@ -51,8 +51,11 @@
         <router-link to="/wall-analyze">
           <el-menu-item index="5-1">情报墙分析</el-menu-item>
         </router-link>
-        <router-link to="/wall-manage">
-          <el-menu-item index="5-2">情报墙管理</el-menu-item>
+        <router-link to="/wall-config">
+          <el-menu-item index="5-2">情报墙图表</el-menu-item>
+        </router-link>
+        <router-link to="/wall-data">
+          <el-menu-item index="5-3">情报墙数据</el-menu-item>
         </router-link>
       </el-submenu>
     </el-menu>
@@ -99,8 +102,12 @@ export default {
           index: "5-1"
         },
         {
-          path: "/wall-manage",
+          path: "/wall-config",
           index: "5-2"
+        },
+        {
+          path: "/wall-data",
+          index: "5-3"
         }
       ]
     };

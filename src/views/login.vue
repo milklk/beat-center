@@ -26,7 +26,14 @@
               v-model="code"
             />
             <div @click="updata" style="color:#2e82ff" class="code">
-              <identify :identifyCode="identifyCode" />
+              <img
+                :src="
+                  `http://localhost:8080/bs/getVerificationCode?time=${time}`
+                "
+                alt=""
+                width="100"
+                height="40"
+              />
               <span style="margin-left:10px">换一张</span>
             </div>
           </div>
@@ -38,8 +45,7 @@
 </template>
 
 <script>
-import identify from "../components/identify";
-import { getCode } from "../api";
+import { getCode, Loging } from "../api";
 export default {
   name: "login",
   data() {
@@ -48,30 +54,18 @@ export default {
       password: "",
       code: "",
       auto: false,
-      identifyCode: "",
-      warn: ""
+      warn: "",
+      time: ""
     };
-  },
-  components: {
-    identify
   },
   computed: {},
   async mounted() {
-    const code = await getCode();
-    if (code.ret === "200") {
-      this.identifyCode = code.data;
-    } else {
-      alert("网络连接错误，请刷新后重试");
-    }
+    this.img = await getCode();
   },
   methods: {
     async updata() {
-      const code = await getCode();
-      if (code.ret === "200") {
-        this.identifyCode = code.data;
-      } else {
-        alert("网络连接错误，请刷新后重试");
-      }
+      await getCode();
+      this.time = new Date();
     },
     async sumbit() {
       this.warn = !this.user
@@ -80,22 +74,24 @@ export default {
         ? "请输入密码"
         : !this.code
         ? "请输入验证码"
-        : this.code.toLowerCase() !== this.identifyCode.toLowerCase()
-        ? "你输入的验证码有误，请重新输入"
         : "";
       if (!this.warn) {
         const account = this.user,
           password = this.password,
-        code = this.code;
-        await this.$store.dispatch("login/loging", {
-          account,
-          password,
-          code
-        });
+          code = this.code;
+        const login = await Loging({ account, password, code });
+        if (login.ret === "200") {
+          const data = login.data,
+            ses = window.sessionStorage;
+          ses.setItem("token", data.token);
+          ses.setItem("user", account);
+        } else {
+          this.warn = login.msg;
+          this.updata();
+          this.code = "";
+        }
         if (window.sessionStorage.token) {
           this.$router.push({ path: "/" });
-        } else {
-          this.warn = "你输入的用户名或密码错误";
         }
       } else {
         this.updata();

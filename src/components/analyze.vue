@@ -7,11 +7,13 @@
           <ul>
             <li>
               <dl>
-                <dt style="font-size:18px;font-weight:700">{{dataBar.title}}</dt>
+                <dt style="font-size:18px;font-weight:700">
+                  {{ dataBar.title }}
+                </dt>
                 <dd>
-                  <span style="color:#2AB9D0;font-size:31px;">{{dataBar.data.reduce((a,b) => a+b,0)}}</span>
+                  <span>{{ dataBar.data.reduce((a, b) => a + b, 0) }}</span>
                   <br />
-                  <br />{{dataBar.subhead}}
+                  <br />{{ dataBar.subhead }}
                 </dd>
               </dl>
             </li>
@@ -26,27 +28,11 @@
           <ul>
             <li class="all-datas">
               <ul>
-                <li>
+                <li v-for="item in dataAll" :key="item.name">
                   <dl>
-                    <dt>案件总数：</dt>
+                    <dt>{{ item.name }}总数：</dt>
                     <dd>
-                      <span style="color:#2AB9D0;font-size:20px;">222</span>
-                    </dd>
-                  </dl>
-                </li>
-                <li>
-                  <dl>
-                    <dt>人员总数：</dt>
-                    <dd>
-                      <span style="color:#2AB9D0;font-size:20px;">222</span>
-                    </dd>
-                  </dl>
-                </li>
-                <li>
-                  <dl>
-                    <dt>情报总数：</dt>
-                    <dd>
-                      <span style="color:#2AB9D0;font-size:20px;">222</span>
+                      <span>{{ item.value }}</span>
                     </dd>
                   </dl>
                 </li>
@@ -62,7 +48,7 @@
 </template>
 
 <script>
-import { log } from 'util';
+import { log } from "util";
 export default {
   name: "analyze",
   data() {
@@ -138,7 +124,7 @@ export default {
           splitArea: {
             show: false
           },
-          data: dataBar.legend,
+          data: dataBar.xAxis,
           axisLine: {
             lineStyle: {
               color: "tranparent"
@@ -210,7 +196,7 @@ export default {
       const compare = this.$echarts.init(this.$refs.compare);
       const compareOption = {
         title: {
-          text: "本年数据比较"
+          text: dataCompare.title
         },
         tooltip: {
           trigger: "axis",
@@ -220,7 +206,7 @@ export default {
           formatter: "{a0}:{c0}<br>{a1}:{c1}<br>{a2}:{c2}"
         },
         legend: {
-          data: ["案件", "人员", "情报"]
+          data: dataCompare.legend
         },
         grid: {
           left: "3%",
@@ -243,20 +229,7 @@ export default {
                 color: "#ccc"
               }
             },
-            data: [
-              "一月",
-              "二月",
-              "三月",
-              "四月",
-              "五月",
-              "六月",
-              "七月",
-              "八月",
-              "九月",
-              "十月",
-              "十一月",
-              "十二月"
-            ]
+            data: dataCompare.xAxis
           }
         ],
         yAxis: [
@@ -280,23 +253,11 @@ export default {
             }
           }
         ],
-        series: [
-          {
-            name: "案件",
-            type: "bar",
-            data: [320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390]
-          },
-          {
-            name: "人员",
-            type: "bar",
-            data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90]
-          },
-          {
-            name: "情报",
-            type: "bar",
-            data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290]
-          }
-        ]
+        series: dataCompare.data.map(d => ({
+          type: "bar",
+          name: d.name,
+          data: d.value
+        }))
       };
       compare.setOption(compareOption);
     };
@@ -305,7 +266,7 @@ export default {
       const trend = this.$echarts.init(this.$refs.trend);
       const trendOption = {
         title: {
-          text: "本年数据趋势"
+          text: dataTrend.title
         },
         tooltip: {
           trigger: "axis",
@@ -346,20 +307,7 @@ export default {
                 color: "#ccc"
               }
             },
-            data: [
-              "一月",
-              "二月",
-              "三月",
-              "四月",
-              "五月",
-              "六月",
-              "七月",
-              "八月",
-              "九月",
-              "十月",
-              "十一月",
-              "十二月"
-            ]
+            data: dataTrend.xAxis
           }
         ],
         yAxis: [
@@ -386,7 +334,7 @@ export default {
 
         series: [
           {
-            name: "数据",
+            name: dataTrend.data.name,
             type: "line",
             lineStyle: {
               color: "#70D1E0"
@@ -397,7 +345,7 @@ export default {
             areaStyle: {
               color: "#D3F0F5"
             },
-            data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90]
+            data: dataTrend.data.value
           }
         ]
       };
@@ -452,6 +400,9 @@ export default {
           left 50%
           bottom 0
           transform translate(-50%,0)
+          span
+            color #2AB9D0
+            font-size 31px
   .right
     width 66.3%
     .all-datas
@@ -471,6 +422,11 @@ export default {
             display flex
             flex-direction column
             justify-content space-around
+            dd
+              margin-left 10px
+            span
+              color #2AB9D0
+              font-size 24px
     .data-compare
       height 74%
       padding 20px

@@ -1,7 +1,7 @@
 <template>
   <div class="information">
     <Tab :name="'情报'"  />
-    <List v-if="!this.$route.query.value"/>
+    <List v-if="!this.$route.query.id"/>
     <Detail v-else/>
   </div>
 </template>

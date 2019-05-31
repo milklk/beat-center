@@ -10,7 +10,7 @@
         :disable-transitions="disable"
         @close="handleClose(index, tag)"
         @click="pushTag(tag.id)"
-        :type="$route.query.value !== tag.id ? 'info' : ''"
+        :type="$route.query.id !== tag.id ? 'info' : ''"
         :key="index"
         v-for="(tag, index) in tags"
       >
@@ -35,6 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { defer } from "q";
 export default {
   name: "tab",
   props: {
@@ -49,14 +50,14 @@ export default {
   components: {},
   computed: {
     ...mapGetters("manage", {
-      tags: "gtags"
+      tags: "gtags",
+      page: "gpage"
     })
   },
   mounted() {
-    const id = this.$route.query.value;
+    const id = this.$route.query.id;
     if (id) {
       this.$store.dispatch("manage/getManage", id).then(() => {
-        console.log(this.tags);
         if (this.tags.length === 0) {
           this.$store.commit("manage/setTags", { type: "all" });
         }
@@ -68,25 +69,32 @@ export default {
   methods: {
     handleClose(index, tag) {
       const path = this.$route.path;
-      const id = this.$route.query.value;
+      const page = this.page;
+      const id = this.$route.query.id;
       if (id === tag.id) {
         if (this.tags.length - 1 !== 0) {
           if (index === this.tags.length - 1) {
             const tag = this.tags[index - 1];
-            this.$router.push({ path, query: { value: tag.id } });
+            this.$router.push({ path, query: { id: tag.id } });
           } else {
             const tag = this.tags[index + 1];
-            this.$router.push({ path, query: { value: tag.id } });
+            this.$router.push({ path, query: { id: tag.id } });
           }
         } else {
-          this.$router.push({ path });
+          switch (page) {
+            case 1:
+              this.$router.push({ path });
+              break;
+            default:
+              this.$router.push({ path, query: { page } });
+          }
         }
       }
       this.tags.splice(index, 1);
     },
     pushTag(id) {
       const path = this.$route.path;
-      this.$router.push({ path, query: { value: id } });
+      this.$router.push({ path, query: { id } });
     },
     pushName() {
       const path = this.$route.path;
@@ -96,10 +104,19 @@ export default {
       switch (command) {
         case "allExit":
           this.$store.commit("manage/setTags", { type: "all" });
+          const path = this.$route.path;
+          const page = this.page;
+          switch (page) {
+            case 1:
+              this.$router.push({ path });
+              break;
+            default:
+              this.$router.push({ path, query: { page } });
+          }
           break;
         default:
-          if (this.$route.query.value) {
-            const name = this.tags.find(d => this.$route.query.value === d.id);
+          if (this.$route.query.id) {
+            const name = this.tags.find(d => this.$route.query.id === d.id);
             this.$store.commit("manage/setTags", { tag: name, type: "find" });
           }
           break;

@@ -27,7 +27,7 @@ export default function ajax(url, data = {}, type = "get") {
         dataStr = dataStr.substring(0, dataStr.lastIndexOf("&"));
         url = url + "?" + dataStr;
       }
-      promise = axios.post(url, data);
+      promise = axios.post(url);
     }
     promise
       .then(function(response) {

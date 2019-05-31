@@ -38,7 +38,7 @@
             <el-button
               plain
               style="padding: 0px 0px;border: none;"
-              @click.stop="edit"
+              @click.stop="edit(scope.$index, tableData)"
             >
               编辑
             </el-button>
@@ -56,23 +56,37 @@
       <div class="block">
         <el-pagination
           layout="prev, pager, next"
-          :total="30"
+          :total="total"
           :page-size="15"
           @current-change="currentChange"
+          :current-page="page"
         >
         </el-pagination>
       </div>
     </main>
+    <Prompt
+      :addEdit="addEdit"
+      :show="show"
+      :prompt="prompt"
+      :addEditApi="api.addEdit"
+      :acquire="api.acquire"
+      :editData="editData"
+      :page="page"
+    />
   </section>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { log } from "util";
+import Prompt from "./prompt";
 export default {
   name: "list",
   props: {
-    table: Array
+    table: Array,
+    tableData: Array,
+    total: Number,
+    api: Object,
+    prompt: Array
   },
   data() {
     return {
@@ -80,14 +94,19 @@ export default {
         "text-align": "center"
       },
       input: "",
-      selection: []
+      selection: [],
+      addEdit: false,
+      editData: {}
     };
   },
   computed: {
     ...mapGetters("manage", {
-      tableData: "gtableData",
-      tags: "gtags"
+      tags: "gtags",
+      page: "gpage"
     })
+  },
+  components: {
+    Prompt
   },
   methods: {
     rowclick(row) {
@@ -99,20 +118,31 @@ export default {
         });
       }
       const path = this.$route.path;
-      this.$router.push({ path, query: { value: row.id } });
+      this.$router.push({ path, query: { id: row.id } });
     },
     add() {
-      console.log(1);
+      this.addEdit = true;
     },
-    edit() {
-      console.log(1);
+    edit(index, rows) {
+      this.addEdit = true;
+      const row = rows[index];
+      const data = {};
+      for (const key in row) {
+        data[key] = row[key];
+      }
+      this.editData = data;
+    },
+    show(value) {
+      this.addEdit = value;
     },
     remove(index, rows) {
+      this.api.del({ ids: rows[index].id });
       rows.splice(index, 1);
     },
     removes(rows, selection) {
       selection.forEach(d => {
         const i = rows.findIndex(row => row.id === d.id);
+        this.api.del({ ids: rows[i].id });
         rows.splice(i, 1);
       });
       this.selection = [];
@@ -121,11 +151,23 @@ export default {
       this.selection = selection;
     },
     currentChange(val) {
-      console.log(val);
+      const path = this.$route.path;
+      this.$store.commit("manage/setPage", { page: val });
+      this.$router.push({ path, query: { page:val } });
+      this.api.acquire({ pageNumber: this.page, pageSize: 15 });
     }
   },
   mounted() {
-    this.$store.dispatch("manage/getManage");
+    const path = this.$route.path;
+    const page = this.page;
+    switch (page) {
+      case 1:
+        this.$router.push({ path });
+        break;
+      default:
+        this.$router.push({ path, query: { page } });
+        this.api.acquire({ pageNumber: this.page, pageSize: 15 });
+    }
   }
 };
 </script>

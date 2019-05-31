@@ -1,8 +1,9 @@
-import {manageGet} from '../../api'
+import {manageGet} from '../../api';
 
 const state = {
   tags: [],
-  tableData: []
+  tableData: [],
+  page: 1
 }
 
 const mutations = {
@@ -24,11 +25,8 @@ const mutations = {
   getTableData(state, {tableData}) {
     state.tableData = tableData
   },
-  initTags (state) {
-    state.tags = []
-  },
-  elseTags(state,{tag}){
-    state.tags = state.tags.find(tag)
+  setPage(state,{page}) {
+    state.page = page
   }
 }
 
@@ -52,6 +50,9 @@ const getters = {
   },
   gtags(state) {
     return state.tags
+  },
+  gpage(state) {
+    return state.page
   }
 }
 

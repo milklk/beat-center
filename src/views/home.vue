@@ -1,5 +1,11 @@
 <template>
-  <Analyze :dataPie="dataPie" :dataBar="dataBar" />
+  <Analyze
+    :dataPie="dataPie"
+    :dataBar="dataBar"
+    :dataAll="dataAll"
+    :dataCompare="dataCompare"
+    :dataTrend="dataTrend"
+  />
 </template>
 
 <script>
@@ -19,9 +25,9 @@ export default {
         ]
       },
       dataBar: {
-        title: '本月研判统计',
+        title: "本月研判统计",
         subhead: "本月研判总人数",
-        legend: [
+        xAxis: [
           "2019-05-01",
           "2019-05-02",
           "2019-05-03",
@@ -88,9 +94,73 @@ export default {
           214
         ]
       },
-      dataAll: [],
-      dataCompare: {},
-      dataTrend: {}
+      dataAll: [
+        {
+          name: "案件",
+          value: "2233"
+        },
+        {
+          name: "人员",
+          value: "2233"
+        },
+        {
+          name: "情报",
+          value: "2233"
+        }
+      ],
+      dataCompare: {
+        title: "本年数据比较",
+        legend: ["案件", "人员", "情报"],
+        xAxis: [
+          "一月",
+          "二月",
+          "三月",
+          "四月",
+          "五月",
+          "六月",
+          "七月",
+          "八月",
+          "九月",
+          "十月",
+          "十一月",
+          "十二月"
+        ],
+        data: [
+          {
+            name: "案件",
+            value: [320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390]
+          },
+          {
+            name: "人员",
+            value: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90]
+          },
+          {
+            name: "情报",
+            value: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290]
+          }
+        ]
+      },
+      dataTrend: {
+        title: "本年数据趋势",
+        xAxis: [
+          "一月",
+          "二月",
+          "三月",
+          "四月",
+          "五月",
+          "六月",
+          "七月",
+          "八月",
+          "九月",
+          "十月",
+          "十一月",
+          "十二月"
+        ],
+        data: {
+          name: "数据",
+          value: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90]
+        }
+      }
     };
   },
   components: {

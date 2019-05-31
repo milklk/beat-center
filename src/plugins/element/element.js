@@ -17,7 +17,9 @@ import {
   Input,
   Table,
   TableColumn,
-  Pagination
+  Pagination,
+  Select,
+  Option
 } from "element-ui";
 
 Vue.use(Button);
@@ -38,3 +40,5 @@ Vue.use(Input);
 Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Pagination);
+Vue.use(Select);
+Vue.use(Option);
