@@ -28,7 +28,7 @@
             <div @click="updata" style="color:#2e82ff" class="code">
               <img
                 :src="
-                  `http://localhost:8080/bs/getVerificationCode?time=${time}`
+                  `${api}/getVerificationCode?time=${time}`
                 "
                 alt=""
                 width="100"
@@ -46,10 +46,12 @@
 
 <script>
 import { getCode, Loging } from "../api";
+import api from "../api/proxy";
 export default {
   name: "login",
   data() {
     return {
+      api :api,
       user: "",
       password: "",
       code: "",

@@ -86,7 +86,8 @@ export default {
     tableData: Array,
     total: Number,
     api: Object,
-    prompt: Array
+    prompt: Array,
+    del: String
   },
   data() {
     return {
@@ -136,13 +137,13 @@ export default {
       this.addEdit = value;
     },
     remove(index, rows) {
-      this.api.del({ ids: rows[index].id });
+      this.api.del({ [this.del]: rows[index].id });
       rows.splice(index, 1);
     },
     removes(rows, selection) {
       selection.forEach(d => {
         const i = rows.findIndex(row => row.id === d.id);
-        this.api.del({ ids: rows[i].id });
+        this.api.del({ [this.del]: rows[i].id });
         rows.splice(i, 1);
       });
       this.selection = [];

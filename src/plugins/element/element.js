@@ -20,7 +20,8 @@ import {
   Pagination,
   Select,
   Option,
-  DatePicker
+  DatePicker,
+  Upload
 } from "element-ui";
 
 Vue.use(Button);
@@ -44,3 +45,4 @@ Vue.use(Pagination);
 Vue.use(Select);
 Vue.use(Option);
 Vue.use(DatePicker);
+Vue.use(Upload);

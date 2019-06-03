@@ -8,8 +8,9 @@
       :total="total"
       :api="api"
       :prompt="prompt"
+      :del="del"
     />
-    <Detail v-else :detail="detail" />
+    <Detail v-else />
   </div>
 </template>
 
@@ -21,13 +22,14 @@ import {
   wallTableData,
   wallTableDataDel,
   wallDataAddEdit,
-  wallTableType,
+  tableType,
   wallList
 } from "../../api";
 export default {
   name: "wall-config",
   data() {
     return {
+      del: 'ids',
       table: [
         {
           name: "数据名称",
@@ -60,9 +62,6 @@ export default {
       ],
       tableData: [],
       total: 0,
-      detail: {
-        name: ""
-      },
       api: {
         del: wallTableDataDel,
         addEdit: wallDataAddEdit,
@@ -149,10 +148,9 @@ export default {
   },
   mounted() {
     this.wallData({ pageNumber: "1", pageSize: "15" });
-    this.wallList({ pageNumber: "1", pageSize: "60" });
-    this.wallConfigType({ dicType: "reportType" });
-    this.wallConfigType({ dicType: "cycleType" });
-    this.wallConfigType({ dicType: "drugsType" });
+    this.tableType({ dicType: "reportType" });
+    this.tableType({ dicType: "cycleType" });
+    this.tableType({ dicType: "drugsType" });
   },
   methods: {
     async wallData({ pageNumber, pageSize }) {
@@ -161,16 +159,11 @@ export default {
       this.tableData = data.list;
       this.total = data.total;
     },
-    async wallConfigType({ dicType }, type) {
-      const list = await wallTableType({ dicType });
+    async tableType({ dicType }, type) {
+      const list = await tableType({ dicType });
       if (list.ret === "200") {
         this[dicType] = list.data;
       }
-    },
-    async wallList({ pageNumber, pageSize }) {
-      const list = await wallList({ pageNumber, pageSize });
-
-      console.log(list);
     }
   }
 };
