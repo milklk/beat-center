@@ -62,7 +62,6 @@ export default {
   computed: {},
   methods: {
     async updata() {
-      await getCode();
       this.time = new Date();
     },
     async sumbit() {
