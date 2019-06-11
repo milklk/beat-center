@@ -15,7 +15,6 @@
           密码
           <input type="password" placeholder="请输入密码" v-model="password" />
         </label>
-
         <label for="">
           验证码
           <div style="width:335px">
@@ -61,9 +60,6 @@ export default {
     };
   },
   computed: {},
-  async mounted() {
-    this.img = await getCode();
-  },
   methods: {
     async updata() {
       await getCode();
