@@ -3,8 +3,11 @@ module.exports = {
     port: 8080, 
     proxy: {
       '/bs': {
-        target: 'http://192.168.0.106:8080', 
-        changeOrigin: true
+        target: 'http://192.168.0.106:8080/bs', 
+        changeOrigin: true,
+        pathRewrite: { 
+          '^/bs': '' //路径重写 
+          } 
       }
     }
    },
