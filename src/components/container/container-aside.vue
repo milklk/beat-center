@@ -1,125 +1,64 @@
 <template>
   <div class="container-aside">
     <el-menu :default-active="index" class="el-menu-vertical-demo">
-      <router-link to="/home">
-        <el-menu-item index="1">
-          <i class="el-icon-s-home"></i>
-          <span slot="title">首页</span>
-        </el-menu-item>
-      </router-link>
-      <el-submenu index="2">
-        <template slot="title">
-          <i class="el-icon-s-order"></i>
-          <span slot="title">案件</span>
-        </template>
-        <router-link to="/case-analyze">
-          <el-menu-item index="2-1">案件分析</el-menu-item>
+      <template v-for="(item,index) in paths">
+        <router-link :to="item.paths[0].path" v-if="item.paths.length=== 1">
+          <el-menu-item :index="item.paths[0].index" @click="setTab({...item.paths[0]})">
+            <i :class="item.type.icon"></i>
+            <span slot="title">{{item.type.name}}</span>
+          </el-menu-item>
         </router-link>
-        <router-link to="/case-manage">
-          <el-menu-item index="2-2">案件管理</el-menu-item>
-        </router-link>
-      </el-submenu>
-      <el-submenu index="3">
-        <template slot="title">
-          <i class="el-icon-user-solid"></i>
-          <span slot="title">人员</span>
-        </template>
-        <router-link to="/crew-analyze">
-          <el-menu-item index="3-1">人员分析</el-menu-item>
-        </router-link>
-        <router-link to="/crew-manage">
-          <el-menu-item index="3-2">人员管理</el-menu-item>
-        </router-link>
-      </el-submenu>
-      <el-submenu index="4">
-        <template slot="title">
-          <i class="el-icon-s-data"></i>
-          <span slot="title">情报</span>
-        </template>
-        <router-link to="/information-analyze">
-          <el-menu-item index="4-1">情报分析</el-menu-item>
-        </router-link>
-        <router-link to="/information-manage">
-          <el-menu-item index="4-2">情报管理</el-menu-item>
-        </router-link>
-      </el-submenu>
-      <el-submenu index="5">
-        <template slot="title">
-          <i class="el-icon-s-marketing"></i>
-          <span slot="title">情报墙</span>
-        </template>
-        <router-link to="/wall-analyze">
-          <el-menu-item index="5-1">情报墙分析</el-menu-item>
-        </router-link>
-        <router-link to="/wall-config">
-          <el-menu-item index="5-2">情报墙图表</el-menu-item>
-        </router-link>
-        <router-link to="/wall-data">
-          <el-menu-item index="5-3">情报墙数据</el-menu-item>
-        </router-link>
-      </el-submenu>
+        <el-submenu v-if="item.paths.length > 1" :index="(index + 1).toString()">
+          <template slot="title">
+            <i :class="item.type.icon"></i>
+            <span slot="title">{{item.type.name}}</span>
+          </template>
+          <router-link v-for="d in item.paths" :to="d.path" :key="d.index">
+            <el-menu-item :index="d.index" @click="setTab({...d})">{{d.name}}</el-menu-item>
+          </router-link>
+        </el-submenu>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "container-aside",
   data() {
     return {
-      index: "1",
-      paths: [
-        {
-          path: "/home",
-          index: "1"
-        },
-        {
-          path: "/case-analyze",
-          index: "2-1"
-        },
-        {
-          path: "/case-manage",
-          index: "2-2"
-        },
-        {
-          path: "/crew-analyze",
-          index: "3-1"
-        },
-        {
-          path: "/crew-manage",
-          index: "3-2"
-        },
-        {
-          path: "/information-analyze",
-          index: "4-1"
-        },
-        {
-          path: "/information-manage",
-          index: "4-2"
-        },
-        {
-          path: "/wall-analyze",
-          index: "5-1"
-        },
-        {
-          path: "/wall-config",
-          index: "5-2"
-        },
-        {
-          path: "/wall-data",
-          index: "5-3"
-        }
-      ]
+      
     };
   },
   components: {},
-  computed: {},
+  computed: {
+    ...mapGetters("nav", {
+      paths: "Paths",
+      tabs: "Tabs",
+      index: "Index"
+    })
+  },
   mounted() {
     const path = this.$route.path;
-    const active = this.paths.find(d => d.path === path);
-    this.index = active.index;
+    const active = this.paths
+      .map(d => d.paths)
+      .flat()
+      .find(d => d.path === path);
+      this.$store.commit("nav/setIndex",{index:active.index});
   },
-  methods: {}
+  methods: {
+    setTab({ name, path, index }) {
+      this.$store.commit("nav/setIndex",{index:index});
+      const i = this.tabs.findIndex(d => d.index === index);
+      if (i === -1) {
+        this.$store.commit("nav/setTabs", {
+          tab: { name, path, index },
+          type: "push"
+        });
+      }
+    }
+  }
 };
 </script>
 

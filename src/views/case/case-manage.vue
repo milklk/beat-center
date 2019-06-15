@@ -1,6 +1,5 @@
 <template>
   <div class="case">
-    <Tab :name="'案件'" />
     <List
       v-if="!this.$route.query.id"
       :table="table"
@@ -9,24 +8,29 @@
       :api="api"
       :prompt="prompt"
       :del="del"
+      :h="h"
     />
     <Detail v-else />
   </div>
 </template>
 
 <script>
-import Tab from "../../components/tab";
 import List from "../../components/list";
 import Detail from "../../components/detail";
-import { caseList, tableType, glevelCity,caseDel } from "../../api";
+import { caseList, dictionary, glevelCity,caseDel,caseAdd,caseEdit } from "../../api";
 export default {
   name: "case-manage",
   data() {
     return {
+      h: "案件",
       table: [
         {
           name: "案件名称",
           value: "name"
+        },
+        {
+          name: "案件编号",
+          value:"code"
         },
         {
           name: "案件类型",
@@ -58,7 +62,7 @@ export default {
         },
         {
           name: "案件时间",
-          value: "happenName"
+          value: "happenTime"
         }
       ],
       tableData: [],
@@ -66,15 +70,18 @@ export default {
       caseType: [],
        api: {
         del: caseDel,
-      
-        acquire: this.caseList
+        addEdit: {
+          add: caseAdd,
+          edit: caseEdit,
+        },
+        acquire: this.caseList,
+        keywords: true
       },
       area: [],
       del: 'id'
     };
   },
   components: {
-    Tab,
     List,
     Detail
   },
@@ -99,6 +106,11 @@ export default {
           }
         },
         {
+          name: "案件编号",
+          value:"",
+          types:"code"
+        },
+        {
           name: "案件内容",
           value: "",
           types: "content"
@@ -115,8 +127,12 @@ export default {
         },
         {
           name: "区域",
+          options: this.area,
           value: "",
-          types: "happenAddress"
+          types: {
+             code: "areaId",
+            value: "areaName"
+          }
         },
         {
           name: "办案人员",
@@ -154,32 +170,33 @@ export default {
         {
           name: "附件",
           value: '',
-          upload: 'upload'
+          // upload: 'upload',
+          types: "fileId"
         }
       ];
     }
   },
   async mounted() {
-    await this.TableType({ dicType: "caseType" });
+    await this.dictionary({ dicType: "caseType" });
     await this.caseList({ pageNumber: 1, pageSize: 15, keywords: "" });
-    // this.levelcity({levelCity:'4503'})
+    await this.levelcity({levelCity:'4503'})
   },
   methods: {
     async caseList({ pageNumber, pageSize, keywords }) {
       const data = await caseList({ pageNumber, pageSize, keywords });
-      data.list.forEach(
+      data.data.list.forEach(
         d =>
           (d.stateName =
             d.state == 0 ? "新建" : d.state == 1 ? "已破案" : "关闭")
       );
-      data.list.forEach(
+      data.data.list.forEach(
         d =>
           (d.type = d.type.toString())
       );
-      data.list.forEach(
+      data.data.list.forEach(
         d => (d.typeName = this.caseType.find(e => e.code == d.type).value)
       );
-      data.list.forEach(d => {
+      data.data.list.forEach(d => {
         const date = new Date(d.happenTime);
         const Y = date.getFullYear() + "-";
         const M =
@@ -187,21 +204,22 @@ export default {
             ? "0" + (date.getMonth() + 1)
             : date.getMonth() + 1) + "-";
         const D = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-        d.happenName = Y + M + D;
+        d.happenTime = Y + M + D;
       });
-      this.tableData = data.list;
-      this.total = data.total;
+      this.tableData = data.data.list;
+      this.total = data.data.total;
     },
-    async TableType({ dicType }, type) {
-      const list = await tableType({ dicType });
+    async dictionary({ dicType }, type) {
+      const list = await dictionary({ dicType });
       if (list.ret === "200") {
         this[dicType] = list.data;
       }
     },
     async levelcity({ levelCity }) {
       const list = await glevelCity({ levelCity });
-      this.area = list.list
-      console.log(list.list)
+      list.list.forEach(d => {
+          this.area.push({code:d.code,value:d.name})
+      })
     }
   }
 };
@@ -211,9 +229,7 @@ export default {
 .case
   box-sizing border-box
   width 100%
-  padding 20px
   width 100%
-  min-height 100%
   display flex
   flex-direction column
   justify-content flex-start

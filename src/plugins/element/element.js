@@ -1,10 +1,16 @@
 import Vue from "vue";
 import {
+  Message,
+  Form,
+  FormItem,
   Button,
   Container,
   Header,
   Aside,
   Main,
+  Radio,
+  RadioGroup,
+  RadioButton,
   Checkbox,
   Dropdown,
   DropdownMenu,
@@ -21,7 +27,11 @@ import {
   Select,
   Option,
   DatePicker,
-  Upload
+  Upload,
+  Loading,
+  Dialog,
+  Cascader,
+  Steps
 } from "element-ui";
 
 Vue.use(Button);
@@ -46,3 +56,18 @@ Vue.use(Select);
 Vue.use(Option);
 Vue.use(DatePicker);
 Vue.use(Upload);
+Vue.use(Steps);
+Vue.use(Upload);
+Vue.use(Upload);
+Vue.use(Dialog);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Radio);
+Vue.use(RadioGroup);
+Vue.use(RadioButton);
+Vue.use(Cascader);
+
+Vue.use(Loading.directive);
+
+Vue.prototype.$loading = Loading.service;
+Vue.prototype.$message = Message;

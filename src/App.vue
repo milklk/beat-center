@@ -9,7 +9,10 @@
           <container-aside/>
         </el-aside>
         <el-main>
-          <router-view></router-view>
+          <div class="container-mian">
+            <containerTab/>
+            <router-view></router-view>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -18,16 +21,30 @@
 </template>
 
 <script>
-import containerHeader from './components/container/container-header'
-import containerAside from './components/container/container-aside'
+import containerHeader from "./components/container/container-header";
+import containerAside from "./components/container/container-aside";
+import containerTab from "./components/container/container-tab";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     containerHeader,
-    containerAside
+    containerAside,
+    containerTab
   }
-}
+};
 </script>
 
-<style></style>
+<style>
+.container-mian {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+</style>

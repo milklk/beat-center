@@ -1,6 +1,5 @@
 <template>
   <div class="wall-data">
-    <Tab :name="'情报墙数据'" />
     <List
       v-if="!this.$route.query.id"
       :table="table"
@@ -9,34 +8,39 @@
       :api="api"
       :prompt="prompt"
       :del="del"
+      :h="h"
     />
-    <Detail v-else />
+    <Detail v-else/>
   </div>
 </template>
 
 <script>
-import Tab from "../../components/tab";
 import List from "../../components/list";
 import Detail from "../../components/detail";
 import {
   wallTableData,
   wallTableDataDel,
   wallDataAddEdit,
-  tableType,
+  dictionary,
   wallList
 } from "../../api";
 export default {
   name: "wall-config",
   data() {
     return {
-      del: 'ids',
+      h: "情报墙数据",
+      del: "ids",
       table: [
+        {
+          name: "数据编码",
+          value: "code"
+        },
         {
           name: "数据名称",
           value: "name"
         },
         {
-          name: "数量名称",
+          name: "横坐标名称",
           value: "abscissaName"
         },
         {
@@ -64,7 +68,10 @@ export default {
       total: 0,
       api: {
         del: wallTableDataDel,
-        addEdit: wallDataAddEdit,
+        addEdit: {
+          add: wallDataAddEdit,
+          edit: wallDataAddEdit
+        },
         acquire: this.wallData
       },
       reportType: [],
@@ -72,7 +79,6 @@ export default {
     };
   },
   components: {
-    Tab,
     List,
     Detail
   },
@@ -88,6 +94,11 @@ export default {
           }
         },
         {
+          name: "数据编码",
+          value: "",
+          types: "code"
+        },
+        {
           name: "所属图表",
           options: this.reportType,
           value: "",
@@ -97,13 +108,13 @@ export default {
           }
         },
         {
-          name: "数量名称",
+          name: "横坐标名称",
           value: "",
           types: "abscissaName"
         },
         {
           name: "数量",
-          value:'',
+          value: "",
           types: "quantity"
         },
         {
@@ -117,14 +128,14 @@ export default {
         },
         {
           name: "来源/区域",
-          value: '',
+          value: "",
           types: "source"
         },
         {
           name: "统计时间",
-          value: '',
+          value: "",
           types: "statisticsDate",
-          picker: 'picker'
+          picker: "picker"
         },
         {
           name: "状态",
@@ -148,19 +159,19 @@ export default {
   },
   mounted() {
     this.wallData({ pageNumber: "1", pageSize: "15" });
-    this.tableType({ dicType: "reportType" });
-    this.tableType({ dicType: "cycleType" });
-    this.tableType({ dicType: "drugsType" });
+    this.dictionary({ dicType: "reportType" });
+    this.dictionary({ dicType: "cycleType" });
+    this.dictionary({ dicType: "drugsType" });
   },
   methods: {
     async wallData({ pageNumber, pageSize }) {
       const data = await wallTableData({ pageNumber, pageSize });
-      data.list.forEach(d => (d.stateName = d.state ? "展示" : "未展示"));
-      this.tableData = data.list;
-      this.total = data.total;
+      data.data.list.forEach(d => (d.stateName = d.state ? "展示" : "未展示"));
+      this.tableData = data.data.list;
+      this.total = data.data.total;
     },
-    async tableType({ dicType }, type) {
-      const list = await tableType({ dicType });
+    async dictionary({ dicType }, type) {
+      const list = await dictionary({ dicType });
       if (list.ret === "200") {
         this[dicType] = list.data;
       }
@@ -170,14 +181,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.wall-data
-  box-sizing border-box
-  width 100%
-  padding 20px
-  width 100%
-  min-height 100%
-  display flex
-  flex-direction column
-  justify-content flex-start
-  align-items center
+.wall-data {
+  box-sizing: border-box;
+  width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
 </style>

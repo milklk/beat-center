@@ -29,7 +29,6 @@ const mutations = {
     state.page = page
   }
 }
-
 const actions = {
   async getManage({commit},id) {
     const table = await manageGet(window.sessionStorage.token)

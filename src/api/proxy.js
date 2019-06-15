@@ -1,10 +1,8 @@
 let api = ''
 
-console.log(process.env.NODE_ENV);
-
 if (process.env.NODE_ENV === 'development') {
   api = '/bs'
 } else {
-  api = ''
+  api = 'http://120.79.94.74:8082/glapi'
 }
 export default api;

@@ -1,13 +1,12 @@
 <template>
   <div class="prompt" v-show="divShow">
     <header>
-      <h3>情报墙图表</h3>
+      <h3>{{h}}</h3>
       <i class="el-icon-close" @click="promptShow()"></i>
     </header>
     <main>
-      <div v-for="item in labels" :key="item.name">
-        {{ item.name }}：
-
+      <div v-for="item in labels" :key="item.name" class="item">
+       <div> {{ item.name }}：</div>
         <el-select
           v-model="item.value"
           placeholder="请选择"
@@ -25,9 +24,9 @@
         <el-date-picker
           v-model="item.value"
           format="yyyy-MM-dd"
-          :value-format="item.stamp ? `timestamp` : `yyyy-MM-dd`"
           type="date"
           placeholder="选择日期"
+          value-format="yyyy-MM-dd"
           v-else-if="item.picker"
         >
         </el-date-picker>
@@ -63,6 +62,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui';
 export default {
   name: "prompt",
   props: {
@@ -72,7 +72,9 @@ export default {
     addEditApi: Function,
     editData: Object,
     acquire: Function,
-    page: Number
+    page: Number,
+    h: String,
+    keywords: Boolean
   },
   data() {
     return {
@@ -110,7 +112,9 @@ export default {
   },
   components: {},
   computed: {},
-  mounted() {},
+  created() {
+    this.labels = this.prompt.map(o => ({ ...o }));
+  },
   methods: {
     promptShow() {
       this.show(false);
@@ -145,11 +149,20 @@ export default {
           query[key] = "";
         }
       }
-      console.log(query);
-
-      this.addEditApi(query);
+      this.addEditApi(query).then((d) => {
+        if(d.ret === "200") {
+          Message.success({
+          message: '提交成功',
+          center: true
+        })
+        } 
+      });
       this.show(false);
-      this.acquire({ pageNumber: this.page, pageSize: 15 });
+      if (this.keywords) {
+          this.acquire({ pageNumber: this.page, pageSize: 15,keywords:""});
+        } else {
+          this.acquire({ pageNumber: this.page, pageSize: 15 });
+      }
       this.labels = this.prompt.map(o => ({ ...o }));
     },
     info() {
@@ -167,7 +180,7 @@ export default {
   top 50%
   left 50%
   transform translate(-50%,-50%)
-  width 700px
+  width 720px
   background #fff
   border 1px solid #ccc
   header
@@ -188,12 +201,14 @@ export default {
     justify-content space-between
     margin-bottom 250px
     &>div
+      box-sizing border-box 
+      width 50%
       margin-bottom 10px
       display flex
       align-items baseline
+      justify-content flex-end
       .upload
-        display flex
-        
+        display flex    
   footer
     padding 0 20px
     display flex

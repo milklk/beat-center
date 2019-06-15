@@ -1,6 +1,5 @@
 <template>
   <div class="wall-config">
-    <Tab :name="'情报墙图表'" />
     <List
       v-if="!this.$route.query.id"
       :table="table"
@@ -9,25 +8,26 @@
       :api="api"
       :prompt="prompt"
       :del="del"
+      :h="h"
     />
     <Detail v-else />
   </div>
 </template>
 
 <script>
-import Tab from "../../components/tab";
 import List from "../../components/list";
 import Detail from "../../components/detail";
 import {
   wallTableConfig,
   wallTableConfigDel,
-  tableType,
+  dictionary,
   wallConfigAddEdit
 } from "../../api";
 export default {
   name: "wall-config",
   data() {
     return {
+      h: '情报墙图表',
       del: 'ids',
       table: [
         {
@@ -51,7 +51,10 @@ export default {
       total: 0,
       api: {
         del: wallTableConfigDel,
-        addEdit: wallConfigAddEdit,
+        addEdit: {
+          add: wallConfigAddEdit,
+          edit: wallConfigAddEdit
+        },
         acquire: this.wallConfig
       },
       reportType: [],
@@ -59,7 +62,6 @@ export default {
     };
   },
   components: {
-    Tab,
     List,
     Detail
   },
@@ -112,18 +114,18 @@ export default {
   },
   mounted() {
     this.wallConfig({ pageNumber: 1, pageSize: 15 });
-    this.tableType({ dicType: "reportType" });
-    this.tableType({ dicType: "cycleType" });
+    this.dictionary({ dicType: "reportType" });
+    this.dictionary({ dicType: "cycleType" });
   },
   methods: {
     async wallConfig({ pageNumber, pageSize }) {
       const config = await wallTableConfig({ pageNumber, pageSize });
-      config.list.forEach(d => (d.stateName = d.state ? "展示" : "未展示"));
-      this.tableData = config.list;
-      this.total = config.total;
+      config.data.list.forEach(d => (d.stateName = d.state ? "展示" : "未展示"));
+      this.tableData = config.data.list;
+      this.total = config.data.total;
     },
-    async tableType({ dicType },type) {
-      const list = await tableType({ dicType });
+    async dictionary({ dicType },type) {
+      const list = await dictionary({ dicType });
       if (list.ret === "200") {
         this[dicType] = list.data;
       }
@@ -136,9 +138,6 @@ export default {
 .wall-config
   box-sizing border-box
   width 100%
-  padding 20px
-  width 100%
-  min-height 100%
   display flex
   flex-direction column
   justify-content flex-start

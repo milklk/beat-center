@@ -1,8 +1,8 @@
 <template>
   <div class="container-header">
-    <h1>禁毒中心</h1>
+    <h1>桂林市禁毒预警研判平台</h1>
     <span class="el-dropdown-link">
-      {{ user }}<i class="iconfont icon-tuichu" @click="exit"></i>
+      {{ user }}<i class="iconfont icon-tuichu" @click="exit" title="退出登陆"></i>
     </span>
   </div>
 </template>

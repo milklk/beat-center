@@ -10,6 +10,9 @@ import "./plugins/reset.css";
 import "./plugins/element/element.css";
 import "./assets/iconfont/iconfont.css";
 
+
+
+
 Vue.config.productionTip = false;
 
 new Vue({

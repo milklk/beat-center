@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { log } from "util";
 export default {
   name: "analyze",
   data() {
@@ -362,7 +361,6 @@ export default {
   box-sizing border-box
   height 100%
   width 100%
-  padding 20px
   display flex
   justify-content space-between
   align-items center
