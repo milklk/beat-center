@@ -21,6 +21,7 @@ import {
   MenuItemGroup,
   Tag,
   Input,
+  Image,
   Table,
   TableColumn,
   Pagination,
@@ -31,7 +32,8 @@ import {
   Loading,
   Dialog,
   Cascader,
-  Steps
+  Steps,
+  Step
 } from "element-ui";
 
 Vue.use(Button);
@@ -66,6 +68,8 @@ Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(RadioButton);
 Vue.use(Cascader);
+Vue.use(Step);
+Vue.use(Image);
 
 Vue.use(Loading.directive);
 

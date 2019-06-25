@@ -10,7 +10,7 @@
       :del="del"
       :h="h"
     />
-    <Detail v-else/>
+    <!-- <Detail v-else/> -->
   </div>
 </template>
 
@@ -183,7 +183,6 @@ export default {
 <style lang="stylus" scoped>
 .wall-data {
   box-sizing: border-box;
-  width: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;

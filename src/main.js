@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import "./plugins/element/element.js";
-import "./plugins/mock";
+// import "./plugins/mock";
 import "./plugins/echarts";
 import "./plugins/reset.css";
 import "./plugins/element/element.css";

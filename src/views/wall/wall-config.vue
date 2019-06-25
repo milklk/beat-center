@@ -10,7 +10,7 @@
       :del="del"
       :h="h"
     />
-    <Detail v-else />
+    <!-- <Detail v-else /> -->
   </div>
 </template>
 

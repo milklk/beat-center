@@ -2,6 +2,7 @@
   <div class="login">
     <h1>桂林市禁毒预警研判平台</h1>
     <main>
+      <img src="../assets/images/logo.png" alt srcset>
       <form action="javascript">
         <h2>用户登录</h2>
         <aside class="warn">{{ warn }}</aside>
@@ -22,7 +23,7 @@
                 :src="
                   `${api}/getVerificationCode?time=${time}`
                 "
-                alt=""
+                alt
                 width="100"
                 height="40"
               >
@@ -124,14 +125,19 @@ h1 img {
 }
 
 main {
-  width: 478px;
-  height: 315px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
+}
+main form {
+  width: 478px;
+  height: 315px;
   background: rgba(16, 14, 57, 1);
   border: 1px solid rgba(38, 70, 135, 1);
   opacity: 0.75;

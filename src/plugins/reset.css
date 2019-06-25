@@ -142,24 +142,11 @@ a:hover {
   text-decoration: none;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-::-webkit-scrollbar-track-piece {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-::-webkit-scrollbar-thumb:vertical {
-  height: 5px;
-  background-color: rgba(125, 125, 125, 0.7);
-}
-::-webkit-scrollbar-thumb:horizontal {
-  width: 5px;
-  background-color: rgba(125, 125, 125, 0.7);
-}
+
+
+
 html,
 body {
-  width: 100vw;
   font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", "微软雅黑";
 }
 body {
@@ -181,4 +168,27 @@ body {
 /*隐藏*/
 .dn {
   display: none;
+}
+
+
+
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: rgba(125, 125, 125, 0.7);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  width: 5px;
+  background-color: rgba(125, 125, 125, 0.7);
+  border-radius: 6px;
 }

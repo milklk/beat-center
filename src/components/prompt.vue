@@ -213,5 +213,5 @@ export default {
     padding 0 20px
     display flex
     justify-content flex-end
-    margin-bottom 10px
+    margin-bottom 20px
 </style>

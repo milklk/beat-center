@@ -6,7 +6,7 @@
       </el-input>
       <div>
         <el-button type="success" @click="add">增加</el-button>
-        <el-button type="danger" @click="removes(tableData, selection)">删除</el-button>
+        <el-button type="danger" @click="removes">删除</el-button>
       </div>
     </header>
     <main>
@@ -20,26 +20,28 @@
         @select-all="select"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column :prop="tab.value" :label="tab.name" v-for="tab in table" :key="tab.value" :formatter="tab.formatter"></el-table-column>
+        <el-table-column
+          :prop="tab.value"
+          :label="tab.name"
+          v-for="tab in table"
+          :key="tab.value"
+          :formatter="tab.formatter"
+        ></el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <el-button
-              plain
-              style="padding: 0px 0px;border: none;"
-              @click.stop="edit(scope.$index, tableData)"
-            >编辑</el-button>
+            <el-button plain style="padding: 0px 0px;border: none;" @click.stop="edit(scope.row)">编辑</el-button>
             <el-button
               type="danger"
               plain
               style="padding: 0px 0px;border: none;"
-              @click.stop="remove(scope.$index, tableData)"
+              @click.stop="remove(scope.row)"
             >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
-          layout="prev, pager, next"
+          layout="total,prev, pager, next"
           :total="total"
           :page-size="15"
           @current-change="currentChange"
@@ -58,6 +60,13 @@
       :h="h"
       :keywords="api.keywords"
     />
+    <el-dialog title="温馨提示" :visible.sync="delshow" width="30%" top="35vh">
+      <span style="text-align:center;">确认删除数据吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="delBtn">确 定</el-button>
+        <el-button @click="delshow = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 
@@ -65,6 +74,7 @@
 import { mapGetters } from "vuex";
 import Prompt from "./prompt";
 import api from "../api/proxy";
+import { Message } from "element-ui";
 export default {
   name: "list",
   props: {
@@ -78,6 +88,8 @@ export default {
   },
   data() {
     return {
+      delshow: false,
+      delstatus: false,
       cellStyle: {
         "text-align": "center"
       },
@@ -107,12 +119,10 @@ export default {
         });
       }
       const path = this.$route.path;
-      this.$router.push({ path, query: { id: row.id } });
+      // this.$router.push({ path, query: { id: row.id } });
     },
     add() {
       this.addEdit = true;
-      console.log(this.api.addEdit.add);
-
       this.addEditApi = this.api.addEdit.add;
     },
     edit(index, rows) {
@@ -128,17 +138,48 @@ export default {
     show(value) {
       this.addEdit = value;
     },
-    remove(index, rows) {
-      this.api.del({ [this.del]: rows[index].id });
-      rows.splice(index, 1);
+    remove(row) {
+      this.delshow = true;
+      this.selection.push(row);
     },
     removes(rows, selection) {
-      selection.forEach(d => {
-        const i = rows.findIndex(row => row.id === d.id);
-        this.api.del({ [this.del]: rows[i].id });
-        rows.splice(i, 1);
+      if (this.selection.length) {
+        this.delshow = true;
+      } else {
+        Message.error({
+          message: "无需要删除的数据",
+          center: true
+        });
+      }
+    },
+    delBtn() {
+      let selI = 0;
+      this.selection.forEach(d => {
+        const i = this.tableData.findIndex(row => row.id === d.id);
+        this.api.del({ [this.del]: this.tableData[i].id }).then(data => {
+          if (data.ret === "200") {
+            selI++;
+            this.tableData.splice(i, 1);
+          }
+          if (selI === this.selection.length) {
+            Message.success({
+              message: "删除成功",
+              center: true
+            });
+            this.selection = [];
+            this.delshow = false;
+            if (this.api.keywords) {
+              this.api.acquire({
+                pageNumber: this.page,
+                pageSize: 15,
+                keywords: this.keyword
+              });
+            } else {
+              this.api.acquire({ pageNumber: this.page, pageSize: 15 });
+            }
+          }
+        });
       });
-      this.selection = [];
     },
     select(selection) {
       this.selection = selection;
@@ -146,12 +187,16 @@ export default {
     currentChange(val) {
       const path = this.$route.path;
       this.$store.commit("manage/setPage", { page: val });
-      this.$router.push({ path, query: { page: val } });
+      // this.$router.push({ path, query: { page: val } });
       if (this.api.keywords) {
-          this.api.acquire({ pageNumber: this.page, pageSize: 15,keywords: this.keyword});
-        } else {
-          this.api.acquire({ pageNumber: this.page, pageSize: 15 });
-        }
+        this.api.acquire({
+          pageNumber: this.page,
+          pageSize: 15,
+          keywords: this.keyword
+        });
+      } else {
+        this.api.acquire({ pageNumber: this.page, pageSize: 15 });
+      }
     }
   },
   mounted() {}

@@ -6,11 +6,12 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "NODE_ENV":"production"
+    "NODE_ENV": "production"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
+    "d3": "^5.9.2",
     "echarts": "^4.2.1",
     "element-ui": "^2.4.5",
     "js-md5": "^0.7.3",

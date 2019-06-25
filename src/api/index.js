@@ -58,7 +58,7 @@ export const wallDataAddEdit = ({id = "",name,type,code,abscissaName,quantity,so
 export const caseList = ({ pageNumber, pageSize, keywords }) =>
   axios(`${api}/bsCase/list`, { pageNumber, pageSize, keywords }, "post");
 export const caseDel = ({ id }) =>
-  axios(`${api}/bsCase/deleteCaseDrug`, { id }, "post");
+  axios(`${api}/bsCase/deleteCase`, { id }, "post");
 export const caseEdit = ({id = "",name,type,content,drugCount,happenAddress,areaName,areaId,state,managerName,fileId,happenTime,code} = {}) =>
   axios(`${api}/bsCase/updateCase`,{id,name,type,content,drugCount,happenAddress,areaName,areaId,state,managerName,fileId,happenTime,code},"post");
 export const caseAdd = ({name,type,code,content,happenAddress,areaName,areaId,state,managerName,fileId,happenTime}) =>
@@ -97,7 +97,7 @@ export const file = {
  * @param {file}  [drugFiles=""] 毒品照片
  */
 export const drug = {
-  list({ pageNum, pageSize, keywords = `` } = {}) {
+  list({ pageNum, pageSize, keywords = "" } = {}) {
     return axios(`${api}/bsDrugs/list`,{ pageNum, pageSize, keywords },"post");
   },
   add({ name, type, isNew, content = "", drugFiles = "" } = {}) {
@@ -125,11 +125,11 @@ export const drug = {
  * @param {String} areaName 发生区域名称
  * @param {String} happenAddress 详细地点
  * @param {String} managerName 负责人
- * @param {String} state 案件状态：1已处理0未处理
+ * @param {String} state 案件状态：0未破案1已破案
  * @param {String} id 案件ID
  * @param {file} [fileId=""] 附件
  */
-export const Case = {
+export const caseManage = {
   list({ pageNumber, pageSize, keywords = "" } = {}) {
     return axios(`${api}/bsCase/list`,{ pageNumber, pageSize, keywords },"post");
   },
@@ -137,12 +137,14 @@ export const Case = {
     return axios(`${api}/bsCase/detail`,{ id },"post");
   },
   add( {name,type,code,content,happenAddress,areaName,areaId,state,managerName,happenTime,fileId=""} = {}) {
-    return axios(`${api}/bsCase/addCaseDrug`,{name,type,code,content,happenAddress,areaName,areaId,state,managerName,fileId,happenTime},"post");
+    return axios(`${api}/bsCase/addCase`,{name,type,code,content,happenAddress,areaName,areaId,state,managerName,fileId,happenTime},"post");
   },
-  update({name,type,code,content,happenAddress,areaName,areaId,state,managerName,happenTime,fileId=""} = {}) {
-    return axios(`${api}/bsCase/updateCaseDrug`, {name,type,code,content,happenAddress,areaName,areaId,state,managerName,happenTime,fileId}, "post");
+  update({name,type,code,content,happenAddress,areaName,areaId,state,managerName,happenTime,fileId="",id} = {}) {
+    return axios(`${api}/bsCase/updateCase`, {name,type,code,content,happenAddress,areaName,areaId,state,managerName,happenTime,fileId,id}, "post");
   },
-  del() {}
+  del({id}) {
+    return axios(`${api}/bsCase/deleteCase`,{ id },"post");
+  }
 };
 
 /**
@@ -153,7 +155,6 @@ export const Case = {
  * @param {String} id 毒品数量
  */
 export const caseDrug = {
-  list() {},
   add({ drugId, caseId, drugCount }) {
     return axios(`${api}/bsCase/addCaseDrug`, { drugId, caseId, drugCount });
   },
@@ -174,7 +175,7 @@ export const caseDrug = {
  * @param {Number} personGrade 嫌疑程度（10：低20：中30：高）
  * @param {String} id 嫌疑人关联表ID
  */
-export const caseperson = {
+export const casePerson = {
   list({}) {},
   add({ personIdcard, caseId, personName, personSex, personGrade }) {
     return axios(
@@ -183,12 +184,15 @@ export const caseperson = {
       "post"
     );
   },
-  update({ personIdcard, personName, personSex, personGrade, id }) {
+  update({ personIdcard, personName, personSex, personGrade, id,caseId }) {
     return axios(
       `${api}/bsCase/updateCasePerson`,
-      { personIdcard, personName, personSex, personGrade, id },
+      { personIdcard, personName, personSex, personGrade, id,caseId },
       "post"
     );
+  },
+  del({ id }) {
+    return axios(`${api}/bsCase/deleteCasePerson`, { id }, "post");
   }
 };
 
