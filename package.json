@@ -9,7 +9,7 @@
     "NODE_ENV": "production"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "core-js": "^2.6.5",
     "d3": "^5.9.2",
     "echarts": "^4.2.1",
